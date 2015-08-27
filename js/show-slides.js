@@ -1,11 +1,11 @@
-function PromoSlide(holder) {
+function showSlide(holder) {
     var _this = this,
         $w = $(window),
         $b = $('body'),
-        $promo_slides = $(holder),
-        $slides_holder = $promo_slides.find('.slides'),
+        $sectionSlides = $(holder),
+        $slides_holder = $sectionSlides.find('.slides'),
         $slides = $slides_holder.find('.slide'),
-        $nav = $promo_slides.find('.slides-nav'),
+        $nav = $sectionSlides.find('.slides-nav'),
         $dots = $nav.find('.dots a'),
         $nav_prev = $nav.find('.prev'),
         $nav_next = $nav.find('.next'),
@@ -25,7 +25,7 @@ function PromoSlide(holder) {
             if (Math.abs(diff) % 3 == 0 && diff != 0) {
                 if (diff > 0 && pos != 0) {
                     show_slide($current.index() - 1);
-                } else if (diff < 0 && $b.hasClass('show_promo')) {
+                } else if (diff < 0 && $b.hasClass('show-resume')) {
                     show_slide($current.index() + 1);
                 }
                 diff = 0;
@@ -36,10 +36,10 @@ function PromoSlide(holder) {
     function callback() {
         $dots.removeClass('active').eq(pos).addClass('active');
         if (pos == 0) {
-            $promo_slides.addClass('first');
+            $sectionSlides.addClass('first');
         } else {
-            if ($promo_slides.hasClass('first'))
-                $promo_slides.removeClass('first');
+            if ($sectionSlides.hasClass('first'))
+                $sectionSlides.removeClass('first');
         }
         animated_slides = false;
     }
@@ -51,10 +51,9 @@ function PromoSlide(holder) {
             if (i > pos && pos >= 0) {
                 animated_slides = true;
                 if (i == size) {
-                    $("#skip_slides").css('display', 'none');
-                    $promo_slides.slideUp(800, function () {
+                    $sectionSlides.slideUp(800, function () {
                         $slides.removeClass('active');
-                        $b.removeClass('show_promo');
+                        $b.removeClass('show-resume');
                         pos = -1;
                         callback();
                     });
@@ -70,7 +69,7 @@ function PromoSlide(holder) {
                 }
             }
             else if (i < pos) {
-                $b.addClass('show_promo');
+                $b.addClass('show-resume');
                 if (pos > 0) {
                     animated_slides = true;
                     $_slide.addClass('over').hide().slideDown(800, function () {
@@ -83,8 +82,7 @@ function PromoSlide(holder) {
                 else if (pos == -1) {
                     animated_slides = true;
                     $slides.last().addClass('active');
-                    $promo_slides.slideDown(800, function () {
-                        $("#skip_slides").css('display', 'block');
+                    $sectionSlides.slideDown(800, function () {
                         pos = size - 1;
                         callback();
                     });
@@ -96,7 +94,7 @@ function PromoSlide(holder) {
     function set_variables() {
         $current = $slides_holder.find('.slide.active');
         pos = $current.index('.slide');
-        size = $promo_slides.find('.slide').length;
+        size = $sectionSlides.find('.slide').length;
     }
 
     $dots.on('click touchstart', function (e) {
@@ -131,7 +129,7 @@ function PromoSlide(holder) {
         document.addEventListener('touchstart', function (e) {
             var touchobj = e.changedTouches[0];
             startY = parseInt(touchobj.clientY);
-            if ($b.hasClass('show_promo') && e.touches.length == 1) {
+            if ($b.hasClass('show-resume') && e.touches.length == 1) {
                 if ($(e.target).closest(holder).length || $(e.target).closest('header').length) {
                     if (not_click(e)) {
                         e.preventDefault();
@@ -143,30 +141,30 @@ function PromoSlide(holder) {
         document.addEventListener('touchmove', function (e) {
             var touchobj = e.changedTouches[0];
             var dist = parseInt(touchobj.clientY) - startY;
-            if ($b.hasClass('show_promo') && e.touches.length == 1) {
+            if ($b.hasClass('show-resume') && e.touches.length == 1) {
                 if ($(e.target).closest(holder).length || $(e.target).closest('header').length) {
                     if (not_click(e)) {
                         e.preventDefault();
                         if (Math.abs(dist) > 30 && one_touch) {
                             one_touch = false;
                             if (dist > 0) {
-                                promo_slide.prev();
+                                sectionSlide.prev();
                             }
                             else {
-                                promo_slide.next();
+                                sectionSlide.next();
                             }
                         }
                     }
                 }
             }
-            if (window.scrollY <= 0 && !$b.hasClass('show_promo') && dist > 20) {
+            if (window.scrollY <= 0 && !$b.hasClass('show-resume') && dist > 20) {
                 _this.prev();
             }
         }, false);
         document.addEventListener('touchend', function (e) {
             var touchobj = e.changedTouches[0];
             startY = parseInt(touchobj.clientY);
-            if ($b.hasClass('show_promo') && e.touches.length == 1) {
+            if ($b.hasClass('show-resume') && e.touches.length == 1) {
                 if ($(e.target).closest(holder).length || $(e.target).closest('header').length) {
                     if (not_click(e)) {
                         e.preventDefault();
